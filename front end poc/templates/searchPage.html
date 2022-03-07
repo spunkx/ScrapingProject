@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+</head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<body>
+    <div class="wrapper">
+        <pre class= "Ascii">
+    ____  ____  ____      ____________________   _____ _   ______  ____  ____ 
+   / __ \/ __ \/ __ \    / / ____/ ____/_  __/  / ___// | / / __ \/ __ \/ __ \
+  / /_/ / /_/ / / / /_  / / __/ / /     / /     \__ \/  |/ / / / / / / / /_/ /
+ / ____/ _, _/ /_/ / /_/ / /___/ /___  / /     ___/ / / | / /_/ / /_/ / ____/
+/_/   /_/ |_|\____/\____/_____/\____/ /_/     /____/_/ |_/\____/\____/_/     
+</pre>
+<pre class="AsciiTwo">
+    ,___.
+    |-----|
+    ============
+   / |  OO  ~\
+   (  )      0 )
+    \_/-, ,-//-\\
+  ====
+   |||
+  | ||
+  -_/|
+   | ||_
+   (____))
+  </pre>
+    </div>
+    <div >
+        <form action="/searchPage" method="post">
+            <input type="text" name="searchText" class="queryWeb" contentEditable="true">  </input>
+            <button name="searchButton" class="button">submit</button>
+        </form>
+
+        <h1 class="titlez">Welcome to the project!</h1>
+        <table class="table">
+            <tr>
+                <th> Query ID</cdth>
+                <th> Query term </th>
+                <th> Timestamp </th>
+            </tr>   
+                {% for i in range(0, queryData|length) %}
+            <tr>
+        <tr class="clickable text-center" 
+                onclick="window.location='/table'"> 
+            <td>{{queryData[i]['_queryId'] }}</td>
+                <td>{{queryData[i]['query']}}</td>
+                <td>{{queryData[i]['queryTimeStamp']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    </body>

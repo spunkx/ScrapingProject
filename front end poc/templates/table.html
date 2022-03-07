@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!-- various classes have been associated with various tags; this is for the sake of styling, this could be done differently. -->
+    <title>
+        Main
+    </title>
+    
+</head>
+<body>
+    <div class="wrapper"> <!-- look for the .wrapper within the style tag to see how the styling for this tag is -->
+        <pre class= "Ascii">
+    ____  ____  ____      ____________________   _____ _   ______  ____  ____ 
+   / __ \/ __ \/ __ \    / / ____/ ____/_  __/  / ___// | / / __ \/ __ \/ __ \
+  / /_/ / /_/ / / / /_  / / __/ / /     / /     \__ \/  |/ / / / / / / / /_/ /
+ / ____/ _, _/ /_/ / /_/ / /___/ /___  / /     ___/ / / | / /_/ / /_/ / ____/
+/_/   /_/ |_|\____/\____/_____/\____/ /_/     /____/_/ |_/\____/\____/_/     
+</pre>
+<pre class="AsciiTwo">
+  ,___.
+  |-----|
+  ============
+ / |  OO  ~\
+ (  )      0 )
+  \_/-, ,-//-\\
+====
+ |||
+| ||
+-_/|
+ | ||_
+ (____))
+</pre>
+    </div>
+    <div >
+        <h1 class="titlez">TWITTER</h1>
+        <table class="table">
+            <tr>
+                <!-- python embedded commands within html, for statements you must add curly braces  with preceding and following "%" between which the commands lie; 1/4 -->
+                <!-- i.e.  command syntax ;  {"%COMMAND%"} without the quotation marks 2/4-->
+                <!-- the way the jinja template engine works is that it scans this document for the above syntax thus even comments cannot contain the precise syntax 3/4-->
+                <!-- otherwise an error will be thrown 4/4-->
+            {% for i in range(0, tbHeaderLength) %} <!-- simple python embedded commands on html to allow for variable display, notice variable name? look for the "/" route and see the variables there -->
+                <th>{{ tableHeaders[i] }}</th> <!-- when referencing variables without any operations; no percentage signs are required within the curly braces-->
+            {% endfor %} <!-- for loops ending must be declared so the template engine knows when to end the loop. -->
+            </tr>
+            {% for i in range(0, dataLength) %} 
+            <tr class="clickable text-center" onclick="window.location='#{{Data[i]['_id']}}'".style="display: block"> <!-- tag properties can take on variable values as long as it is passed in the route-->
+                {%if Data[i]['aboutContents'][0] == "name" %} <!-- if statements and primitive type comparison operation  -->
+                {% set L = Data[i]['aboutContents'].index("name") %} <!-- The designation of a value to a variable is also doable!-->
+                {% set x = L +1 %} 
+                <td> {{ Data[i]['aboutContents'][x] }} </td>
+                {% else %} <!-- indentation does not matter for jinja templating -->
+                {% set x = "none" %}
+                {% endif %}
+                {% if Data[i]['aboutContents'][2] == "alias" %}
+                {% set L = Data[i]['aboutContents'].index("alias") %}
+                {% set x = L+1 %}
+                <td> {{ Data[i]['aboutContents'][x] }} </td>
+                {% else %}
+                {% set x = "none" %}
+                {% endif %}
+                {% if Data[i]['aboutContents'][12] == "url" %}
+                {% set L = Data[i]['aboutContents'].index("url") %}
+                {% set x = L+1 %}
+                <td> {{ Data[i]['aboutContents'][x]}}</td>
+                {% else %}
+                {% set x = "none" %}
+                {% endif %}    
+            </tr>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+ <!-- FIX LOOP 4 LATER TO ENSURE CHECKBOXES DO NOT APPEAR -->
+    {% for i in Data %}
+    <div id='{{ i["_id"] }}' class="overlay">
+        <table class="queryPops">
+            <th>Profile: {{i['profileOwner'][0]}}</th>
+            <th><a href="#" class="popsClose">X</a></th>
+        </table>
+
+        <table class="queryPops" >
+            <!--<h1 class="queryPops"> Profile: {{i['profileOwner'][0]}}
+                    <a class="popsClose" href="#">&times;
+            </h1>-->
+        </a>                                  
+            {% for detail in queryInfo %}     <!-- these values for the positions are derived based on visually inspecting the mongoDB respective table. 1/2--> 
+            <th>{{detail}}</th>
+                    {%endfor%}                <!-- if in doubt, feel free to have a look, hint: numbers that show when you expand a list in mongoDB are indices. 2/2-->
+            <tr>
+            <td >{{i['EntityId']}}</td>
+            <td>{{i['websiteType']}}</td>
+            <td>{{i['query']}}</td>
+            <td>{{i['queryTimeStamp']}}</td>
+        </tr>
+        </table>
+        <!-- entity info-->
+
+        <table class="queryPops" >
+                {% for info in entityInfo %}     
+                      
+            <th>{{info}}</th>
+                    {%endfor%}
+                <tr>
+                {%if i['aboutContents'][0] == "name" %} <!-- if statements, pretty cool? -->
+                {% set L = i['aboutContents'].index("name") %}
+                {% set x = L +1 %}
+                <td> {{ i['aboutContents'][x] }} </td>
+                {% else %}
+                {% set x = "none" %}
+                {% endif %}
+                {% if i['aboutContents'][2] == "alias" %}
+                {% set L = i['aboutContents'].index("alias") %}
+                {% set x = L+1 %}
+                <td> {{ i['aboutContents'][x] }} </td>
+                {% else %}
+                {% set x = "none" %}
+                {% endif %}
+                {% if i['aboutContents'][4]=="bio"%}
+                {% set L = i['aboutContents'].index("bio") %}
+                {% set x = L+1 %}
+                <td>{{ i['aboutContents'][x] }}</td>
+                {%else%}
+                {% set x = "none" %}
+                {% endif %}
+                {% if i['aboutContents'][6] == "location" %}
+                {% set L = i['aboutContents'].index("location") %}
+                {% set x = L+1 %}
+                <td>{{ i['aboutContents'][x] }}</td>
+                {% else %}
+                {% set x = "none" %}
+                {% endif %}
+                {%if i['aboutContents'][8] == "mediaCount"%}
+                {% set L = i['aboutContents'].index("mediaCount") %}
+                {% set x = L+1 %}
+                <td>{{ i['aboutContents'][x]}}</td>
+                {% else %}
+                {% set x = "none" %}
+                {% endif %}
+                {% if i['aboutContents'][10] == "joinDate" %}
+                {% set L = i['aboutContents'].index("joinDate") %}
+                {% set x = L+1  %}
+                <td> {{ i['aboutContents'][x]}}</td>
+                {% else %}
+                {% set x = "none" %}
+                {% endif %}
+                {% if i['aboutContents'][12] == "url" %}
+                {% set L = i['aboutContents'].index("url") %}
+                {% set x = L+1 %}
+                <td> {{ i['aboutContents'][x]}}</td>
+                {% else %}
+                <td style="display: hidden;"></td>
+                {% set x = "none" %}
+                {% endif %}  
+        </tr>
+        </table>
+
+        <!-- POSTS -->
+        <table class="posts">
+            <tr >
+                {% set lenPosts = i["posts"]|length %}
+                {% set position = i['posts'].index("tweets:") +1 %}
+            {% if i['posts'][position]|length !=0  %} <!-- ensure that "posts" heading is only put for situations where tweets actually exist-->
+            
+            <th>Posts</th>
+        </tr>
+        {%else%}
+        <th>NO POSTS FOUND :(</th>
+        <tr>
+        <td> you see this message because no posts have been found for the user {{i['profileOwner'][0]}}</td>
+        </tr>
+        {% endif %}
+        
+            <tr>
+            {% for interest in range(position, lenPosts) %}
+            <td class="postClick">{{i['posts'][interest]}}</td>
+        </tr>
+            {% endfor %}
+            </table>
+        <table class="checkboxDiv">
+            <th>Search refinement</th>
+                {% for PN in i['propperNouns'] %}
+             <tr>
+                <td>
+            <input type="checkbox"> {{ PN }} </input>
+            {%endfor%}
+            <div class="refineSubmit">
+                    <button class="refineButton">refine</button>
+        </td>
+            </div>
+    </tr>
+        </table>
+        </div>
+    </body>
+    {% endfor %}
